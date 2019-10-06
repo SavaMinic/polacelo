@@ -37,6 +37,19 @@ public class MainEventTrigger : EventTrigger
         
         draggedObject = null;
     }
+
+    public override void OnPointerClick(PointerEventData eventData)
+    {
+        if (GameManager.I.IsMainMenu)
+        {
+            GameManager.I.NewGame();
+        }
+        else if (GameManager.I.IsEndGame)
+        {
+            GameManager.I.ShowMainMenu();
+        }
+    }
+
     public override void OnBeginDrag(PointerEventData data)
     {
         if (!GameManager.I.IsPlaying)

@@ -91,7 +91,8 @@ public class Card : MonoBehaviour
             return false;
         
         var angle = Mathf.Abs(Vector3.SignedAngle(transform.forward, Vector3.up, Vector3.forward));
-        if (angle <= 1f || angle >= 179f)
+        var offset = 3f;
+        if (angle <= offset || angle >= 180f - offset)
         {
             // angle remained same
             if (Math.Abs(angle - previousAngle) <= 0.001f)
@@ -101,7 +102,7 @@ public class Card : MonoBehaviour
             // kept for 10 frames
             if (stabilizedCount >= 10)
             {
-                isFaceUp = angle <= 1f;
+                isFaceUp = angle <= offset;
                 return true;
             }
             previousAngle = angle;
