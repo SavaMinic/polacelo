@@ -57,7 +57,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        State = GameState.MainMenu;
+        State = GameState.Playing;
     }
 
     #endregion

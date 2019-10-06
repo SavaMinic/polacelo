@@ -27,6 +27,41 @@ public class CanvasController : MonoBehaviour
     private void Awake()
     {
         I = this;
+        GameManager.I.OnGameStateChanged += OnGameStateChanged;
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.I.OnGameStateChanged -= OnGameStateChanged;
+    }
+
+    #endregion
+
+    #region Events
+
+    private void OnGameStateChanged()
+    {
+        switch (GameManager.I.State)
+        {
+            case GameManager.GameState.MainMenu:
+                SetMainMenuActive(true);
+                break;
+            case GameManager.GameState.Playing:
+                SetMainMenuActive(false);
+                break;
+            case GameManager.GameState.EndGame:
+                break;
+        }
+    }
+
+    #endregion
+
+    #region Private
+
+    private void SetMainMenuActive(bool isActive)
+    {
+        mainMenuGroup.alpha = isActive ? 1f : 0f;
+        mainMenuGroup.interactable = mainMenuGroup.blocksRaycasts = isActive;
     }
 
     #endregion
