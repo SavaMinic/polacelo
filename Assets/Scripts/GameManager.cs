@@ -19,6 +19,8 @@ public class GameManager : MonoBehaviour
         EndGame,
     }
 
+    private const string HighScoreKey = "HighScore";
+
     #endregion
 
     #region Singleton
@@ -86,8 +88,14 @@ public class GameManager : MonoBehaviour
         {
             OnPointsChanged?.Invoke(value);
             points = value;
+            if (points > HighScore)
+            {
+                PlayerPrefs.SetInt(HighScoreKey, points);
+            }
         }
     }
+
+    public int HighScore => PlayerPrefs.GetInt(HighScoreKey, 0);
 
     #endregion
 

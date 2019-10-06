@@ -40,6 +40,9 @@ public class CanvasController : MonoBehaviour
     
     [SerializeField]
     private Text bottomLabel;
+    
+    [SerializeField]
+    private Text highestLabel;
 
     [SerializeField]
     private Color wonColor;
@@ -151,6 +154,7 @@ public class CanvasController : MonoBehaviour
     private void RefreshPoints(int points)
     {
         bottomLabel.text = $"CARDS:{points}";
+        highestLabel.text = $"HIGHEST {GameManager.I.HighScore}";
     }
 
     private void SetMainMenuActive(bool isActive)
