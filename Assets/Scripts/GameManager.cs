@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     {
         MainMenu,
         Playing,
+        CardFalling,
         EndGame,
     }
 
@@ -35,6 +36,9 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private Card firstCard;
 
+    [SerializeField]
+    private Card secondCard;
+
     private GameState state;
 
     #endregion
@@ -50,6 +54,9 @@ public class GameManager : MonoBehaviour
             OnGameStateChanged?.Invoke();
         }
     }
+
+    public bool IsPlaying => state == GameState.Playing;
+    public bool IsCardFalling => state == GameState.CardFalling;
 
     #endregion
 
@@ -75,6 +82,11 @@ public class GameManager : MonoBehaviour
         {
             NewGame();
         }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            firstCard.SetUseGravity(true);
+        }
     }
 
     #endregion
@@ -87,7 +99,7 @@ public class GameManager : MonoBehaviour
         
         // reset cards
         firstCard.ResetTo(new Vector3(
-            Random.Range(-2f, 2f),
+            0f,
             Random.Range(17f, 18f),
             20f
         ), Quaternion.Euler(
@@ -95,6 +107,20 @@ public class GameManager : MonoBehaviour
             Random.Range(-90f, 90f),
             Random.Range(-45f, -45f)
         ));
+        
+        secondCard.ResetTo(
+            new Vector3(0f, 14.51f, 20.12f),
+            Quaternion.Euler(81f,0,0)
+        );
+    }
+
+    public void StartCallFalling()
+    {
+        if (state == GameState.CardFalling)
+            return;
+
+        State = GameState.CardFalling;
+        // change camera
     }
 
     #endregion
