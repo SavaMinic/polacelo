@@ -142,7 +142,7 @@ public class GameManager : MonoBehaviour
             Points--;
         }
         // check if there is no cards left
-        State = Points == 0 ? GameState.EndGame : GameState.Resolution;
+        State = GameState.Resolution;
     }
 
     public void ResetRound()
@@ -155,6 +155,11 @@ public class GameManager : MonoBehaviour
     {
         points = 1;
         ResetRound();
+    }
+
+    public void GameOver()
+    {
+        State = GameState.EndGame;
     }
 
     public void CardsClashed()

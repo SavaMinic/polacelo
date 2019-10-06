@@ -129,8 +129,15 @@ public class CanvasController : MonoBehaviour
         yield return new WaitForSecondsRealtime(1f);
         Go.to(endGroup, 0.5f, new GoTweenConfig().floatProp("alpha", 0f).setEaseType(GoEaseType.SineOut));
         
-        yield return new WaitForSecondsRealtime(0.5f);
-        GameManager.I.ResetRound();
+        if (GameManager.I.Points > 0)
+        {
+            yield return new WaitForSecondsRealtime(0.5f);
+            GameManager.I.ResetRound();
+        }
+        else
+        {
+            GameManager.I.GameOver();
+        }
     }
 
     private IEnumerator DoEndAnimation()
