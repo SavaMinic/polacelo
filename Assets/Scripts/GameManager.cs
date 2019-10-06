@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
         MainMenu,
         Playing,
         CardFalling,
+        WaitingForEnd,
         EndGame,
     }
 
@@ -65,8 +66,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public bool IsPlaying => state == GameState.Playing;
-    public bool IsCardFalling => state == GameState.CardFalling;
+    public bool IsPlaying => State == GameState.Playing;
+    public bool IsCardFalling => State == GameState.CardFalling;
 
     #endregion
 
@@ -88,6 +89,18 @@ public class GameManager : MonoBehaviour
         if (!Application.isPlaying)
             return;
 
+        if (State == GameState.WaitingForEnd)
+        {
+            // check for both cards
+            if (firstCard.IsOnTheGround(out var firstFaceUp)
+                && secondCard.IsOnTheGround(out var secondFaceUp)
+)
+            {
+                Debug.LogError($"{firstFaceUp} {secondFaceUp}");
+                State = GameState.EndGame;
+            }
+            
+        }
 
         if (Input.GetKeyDown(KeyCode.R))
         {
@@ -117,7 +130,7 @@ public class GameManager : MonoBehaviour
 
     public void CardsClashed()
     {
-        if (state == GameState.CardFalling)
+        if (State == GameState.CardFalling)
             return;
 
         var dragDirection = eventTrigger.NormalizedDragDirection;
@@ -127,7 +140,7 @@ public class GameManager : MonoBehaviour
 
     public void ReleaseCard()
     {
-        if (state != GameState.Playing)
+        if (State != GameState.Playing)
             return;
 
         var dragDirection = eventTrigger.NormalizedDragDirection;
@@ -142,7 +155,7 @@ public class GameManager : MonoBehaviour
         if (cardsReachedGround == 2)
         {
             // both cards reached ground, wait for end
-            Debug.LogError("WAIT FOR END");
+            State = GameState.WaitingForEnd;
         }
         else if (!secondCard.IsFalling)
         {

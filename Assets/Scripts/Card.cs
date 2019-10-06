@@ -14,6 +14,9 @@ public class Card : MonoBehaviour
     private bool isFalling;
     private bool isReachedGround;
 
+    private float previousAngle;
+    private int stabilizedCount;
+
     #endregion
 
     #region Properties
@@ -71,6 +74,7 @@ public class Card : MonoBehaviour
     {
         isFalling = false;
         isReachedGround = false;
+        stabilizedCount = 0;
         
         transform.position = pos;
         transform.rotation = rot ?? Quaternion.identity;
@@ -78,6 +82,34 @@ public class Card : MonoBehaviour
         myRigidbody.velocity = Vector3.zero;
         myRigidbody.angularVelocity = Vector3.zero;
         myRigidbody.useGravity = false;
+    }
+
+    public bool IsOnTheGround(out bool isFaceUp)
+    {
+        isFaceUp = false;
+        if (!isReachedGround)
+            return false;
+        
+        var angle = Mathf.Abs(Vector3.SignedAngle(transform.forward, Vector3.up, Vector3.forward));
+        if (angle <= 1f || angle >= 179f)
+        {
+            // angle remained same
+            if (Math.Abs(angle - previousAngle) <= 0.001f)
+            {
+                stabilizedCount++;
+            }
+            // kept for 10 frames
+            if (stabilizedCount >= 10)
+            {
+                isFaceUp = angle <= 1f;
+                return true;
+            }
+            previousAngle = angle;
+            return false;
+        }
+        previousAngle = angle;
+        stabilizedCount = 0;
+        return false;
     }
 
     #endregion
