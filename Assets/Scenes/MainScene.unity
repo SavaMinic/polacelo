@@ -153,6 +153,48 @@ MonoBehaviour:
   secondCard: {fileID: 1680198838}
   dragForce: 1200
   clashDragForce: 1200
+  cardYRotation:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 75
+      inSlope: 29.340431
+      outSlope: 29.340431
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.08241789
+    - serializedVersion: 3
+      time: 0.49068445
+      value: 80
+      inSlope: 12.869833
+      outSlope: Infinity
+      tangentMode: 97
+      weightedMode: 0
+      inWeight: 0.093403205
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.5
+      value: 105
+      inSlope: 18.982933
+      outSlope: 18.982933
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.08382356
+    - serializedVersion: 3
+      time: 1
+      value: 110
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!4 &40391054
 Transform:
   m_ObjectHideFlags: 0
@@ -602,7 +644,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 418049483}
-  m_LocalRotation: {x: -0.03096885, y: 1.9730416e-10, z: 0.000000006367995, w: 0.99952036}
+  m_LocalRotation: {x: -0.030968849, y: -0.000000001664417, z: 0.0000000063113026,
+    w: 0.99952036}
   m_LocalPosition: {x: 0, y: 15, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:

@@ -48,6 +48,9 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private float clashDragForce;
 
+    [SerializeField]
+    private AnimationCurve cardYRotation;
+
     private GameState state;
     private int points;
 
@@ -215,7 +218,7 @@ public class GameManager : MonoBehaviour
         // reset cards
         firstCard.ResetTo(
             new Vector3(0f, 18f, 20f),
-            Quaternion.Euler(24f, 80f, 65f)
+            Quaternion.Euler(24f, cardYRotation.Evaluate(Random.value), 65f)
         );
         secondCard.ResetTo(
             new Vector3(0f, 14.5f, 20f),
