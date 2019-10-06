@@ -9,8 +9,16 @@ public class Card : MonoBehaviour
 
     private Rigidbody myRigidbody;
     private int cardLayerIndex;
+    private int groundLayerIndex;
 
     private bool isFalling;
+    private bool isReachedGround;
+
+    #endregion
+
+    #region Properties
+
+    public bool IsFalling => isFalling;
 
     #endregion
 
@@ -20,6 +28,7 @@ public class Card : MonoBehaviour
     {
         myRigidbody = GetComponent<Rigidbody>();
         cardLayerIndex = LayerMask.NameToLayer("card");
+        groundLayerIndex = LayerMask.NameToLayer("ground");
     }
 
     #endregion
@@ -28,15 +37,18 @@ public class Card : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        if (isFalling)
-            return;
-        
-        if (other.gameObject.layer == cardLayerIndex)
+        if (!isFalling && other.gameObject.layer == cardLayerIndex)
         {
             StartFalling();
             other.gameObject.GetComponent<Card>().StartFalling();
         
             GameManager.I.CardsClashed();
+        }
+        
+        if (!isReachedGround && other.gameObject.layer == groundLayerIndex)
+        {
+            isReachedGround = true;
+            GameManager.I.ReachedGround(this);
         }
     }
 
@@ -58,6 +70,7 @@ public class Card : MonoBehaviour
     public void ResetTo(Vector3 pos, Quaternion? rot = null)
     {
         isFalling = false;
+        isReachedGround = false;
         
         transform.position = pos;
         transform.rotation = rot ?? Quaternion.identity;

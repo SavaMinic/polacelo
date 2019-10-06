@@ -49,6 +49,8 @@ public class GameManager : MonoBehaviour
 
     private MainEventTrigger eventTrigger;
 
+    private int cardsReachedGround = 0;
+
     #endregion
 
     #region Properties
@@ -100,6 +102,7 @@ public class GameManager : MonoBehaviour
     public void NewGame()
     {
         State = GameState.Playing;
+        cardsReachedGround = 0;
         
         // reset cards
         firstCard.ResetTo(
@@ -131,6 +134,21 @@ public class GameManager : MonoBehaviour
         firstCard.AddForce(dragDirection, dragForce);
         firstCard.StartFalling();
         State = GameState.CardFalling;
+    }
+
+    public void ReachedGround(Card card)
+    {
+        cardsReachedGround++;
+        if (cardsReachedGround == 2)
+        {
+            // both cards reached ground, wait for end
+            Debug.LogError("WAIT FOR END");
+        }
+        else if (!secondCard.IsFalling)
+        {
+            // one card reached ground, but second is still not flying
+            Debug.LogError("FOUL!");
+        }
     }
 
     #endregion
