@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
     #region Actions
 
     public Action OnGameStateChanged;
+    public Action OnCardDragStarted;
     public Action<int> OnPointsChanged;
 
     #endregion
@@ -171,6 +172,11 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         State = GameState.EndGame;
+    }
+
+    public void CardDragStarted()
+    {
+        OnCardDragStarted?.Invoke();
     }
 
     public void CardsClashed()

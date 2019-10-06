@@ -61,6 +61,14 @@ public class CanvasController : MonoBehaviour
     
     [SerializeField]
     private Color lostBackColor;
+    
+    [SerializeField]
+    private CanvasGroup tutorialGroup;
+    
+    [SerializeField]
+    private Animator animator;
+
+    private static readonly int TutorialId = Animator.StringToHash("tutorial");
 
     #endregion
 
@@ -70,6 +78,7 @@ public class CanvasController : MonoBehaviour
     {
         I = this;
         GameManager.I.OnGameStateChanged += OnGameStateChanged;
+        GameManager.I.OnCardDragStarted += OnCardDragStarted;
         GameManager.I.OnPointsChanged += OnPointsChanged;
     }
 
@@ -77,6 +86,7 @@ public class CanvasController : MonoBehaviour
     {
         StopAllCoroutines();
         GameManager.I.OnGameStateChanged -= OnGameStateChanged;
+        GameManager.I.OnCardDragStarted -= OnCardDragStarted;
         GameManager.I.OnPointsChanged -= OnPointsChanged;
     }
 
@@ -95,6 +105,7 @@ public class CanvasController : MonoBehaviour
                 SetMainMenuActive(false);
                 StartCoroutine(DoNewRoundAnimation());
                 RefreshPoints(GameManager.I.Points);
+                RestartTutorialAnimation();
                 break;
             case GameManager.GameState.Resolution:
                 StartCoroutine(DoResolutionAnimation());
@@ -105,6 +116,12 @@ public class CanvasController : MonoBehaviour
         }
     }
 
+    private void OnCardDragStarted()
+    {
+        animator.SetBool(TutorialId, false);
+        tutorialGroup.alpha = 0f;
+    }
+
     private void OnPointsChanged(int points)
     {
         RefreshPoints(points);
@@ -113,6 +130,16 @@ public class CanvasController : MonoBehaviour
     #endregion
 
     #region Private
+
+    private void RestartTutorialAnimation()
+    {
+        animator.SetBool(TutorialId, true);
+    }
+
+    private IEnumerator DoTutorialAnimation()
+    {
+        yield return new WaitForSecondsRealtime(3f);
+    }
 
     private IEnumerator DoNewRoundAnimation()
     {
@@ -159,6 +186,7 @@ public class CanvasController : MonoBehaviour
 
     private void SetMainMenuActive(bool isActive)
     {
+        tutorialGroup.alpha = 0f;
         mainMenuGroup.alpha = isActive ? 1f : 0f;
         mainMenuGroup.interactable = mainMenuGroup.blocksRaycasts = isActive;
         overlayGroup.alpha = isActive ? 0f : 1f;

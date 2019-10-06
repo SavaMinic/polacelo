@@ -64,6 +64,8 @@ public class MainEventTrigger : EventTrigger
             {
                 startDragPos = ray.GetPoint(enterDistance);
             }
+
+            GameManager.I.CardDragStarted();
         }
     }
     
