@@ -39,7 +39,15 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private Card secondCard;
 
+    [SerializeField]
+    private float dragForce;
+    
+    [SerializeField]
+    private float clashDragForce;
+
     private GameState state;
+
+    private MainEventTrigger eventTrigger;
 
     #endregion
 
@@ -65,6 +73,7 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         I = this;
+        eventTrigger = FindObjectOfType<MainEventTrigger>();
     }
 
     private void Start()
@@ -82,11 +91,6 @@ public class GameManager : MonoBehaviour
         {
             NewGame();
         }
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            firstCard.SetUseGravity(true);
-        }
     }
 
     #endregion
@@ -98,29 +102,35 @@ public class GameManager : MonoBehaviour
         State = GameState.Playing;
         
         // reset cards
-        firstCard.ResetTo(new Vector3(
-            0f,
-            Random.Range(17f, 18f),
-            20f
-        ), Quaternion.Euler(
-            Random.Range(-45f, 45f),
-            Random.Range(-90f, 90f),
-            Random.Range(-45f, -45f)
-        ));
-        
+        firstCard.ResetTo(
+            new Vector3(0f, 18f, 20f),
+            Quaternion.Euler(24f, 80f, 65f)
+        );
         secondCard.ResetTo(
-            new Vector3(0f, 14.51f, 20.12f),
-            Quaternion.Euler(81f,0,0)
+            new Vector3(0f, 14.5f, 20f),
+            Quaternion.Euler(90f, 0f, 90f)
         );
     }
 
-    public void StartCallFalling()
+    public void CardsClashed()
     {
         if (state == GameState.CardFalling)
             return;
 
+        var dragDirection = eventTrigger.NormalizedDragDirection;
+        firstCard.AddForce(dragDirection, clashDragForce);
         State = GameState.CardFalling;
-        // change camera
+    }
+
+    public void ReleaseCard()
+    {
+        if (state != GameState.Playing)
+            return;
+
+        var dragDirection = eventTrigger.NormalizedDragDirection;
+        firstCard.AddForce(dragDirection, dragForce);
+        firstCard.StartFalling();
+        State = GameState.CardFalling;
     }
 
     #endregion

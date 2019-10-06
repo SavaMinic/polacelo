@@ -33,10 +33,10 @@ public class Card : MonoBehaviour
         
         if (other.gameObject.layer == cardLayerIndex)
         {
-            isFalling = true;
-            myRigidbody.useGravity = true;
+            StartFalling();
+            other.gameObject.GetComponent<Card>().StartFalling();
         
-            GameManager.I.StartCallFalling();
+            GameManager.I.CardsClashed();
         }
     }
 
@@ -44,9 +44,15 @@ public class Card : MonoBehaviour
 
     #region Public
 
-    public void SetUseGravity(bool useGravity)
+    public void StartFalling()
     {
-        myRigidbody.useGravity = useGravity;
+        isFalling = true;
+        myRigidbody.useGravity = true;
+    }
+
+    public void AddForce(Vector3 direction, float power)
+    {
+        myRigidbody.AddForce(direction * power);
     }
 
     public void ResetTo(Vector3 pos, Quaternion? rot = null)
