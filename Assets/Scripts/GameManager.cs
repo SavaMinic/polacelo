@@ -106,6 +106,7 @@ public class GameManager : MonoBehaviour
     {
         I = this;
         eventTrigger = FindObjectOfType<MainEventTrigger>();
+        Application.targetFrameRate = 60;
     }
 
     private void Start()
@@ -134,6 +135,11 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             ResetRound();
+        }
+
+        if (Input.GetKeyUp(KeyCode.Escape))
+        {
+            Application.Quit();
         }
     }
 
